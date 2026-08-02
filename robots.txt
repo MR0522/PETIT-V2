@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mr0522.github.io/PETIT-V2/sitemap.xml
