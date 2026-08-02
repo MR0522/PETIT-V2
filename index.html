@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PETIT ❤️ - Tu editor de PDF favorito</title>
+    <!-- Favicon (Icono de la pestaña, usa un emoji o un icono real si lo tienes) -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📄❤️</text></svg>">
+    <link rel="stylesheet" href="style.css">
+    <!-- Iconos (Usaremos FontAwesome para los iconos pequeños) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Librerías para procesar PDF y crear ZIP en el navegador -->
+    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+</head>
+<body>
+    
+    <!-- HEADER -->
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo">
+                <div class="logo-icon">📄</div>
+                <h1>PETIT ❤️</h1>
+            </div>
+            <div class="access-button-container">
+                <button class="btn-access"><i class="fas fa-plus"></i> Acceder</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO BANNER (Sección Rosa) -->
+    <section class="hero-banner">
+        <div class="banner-container">
+            <span class="banner-subtitle">Herramienta todo en uno</span>
+            <h2>Tu editor de PDF favorito ❤️</h2>
+            <p>Une, divide, modifica, escanea y firma tus documentos PDF de forma rápida, segura y sencilla.</p>
+        </div>
+    </section>
+
+    <!-- ÁREA PRINCIPAL DE TRABAJO -->
+    <main class="main-work-area">
+        <div class="work-container">
+            
+            <!-- NAVEGACIÓN DE PESTAÑAS (TABS) -->
+            <nav class="tools-nav">
+                <button class="nav-item active" data-tool="merge">
+                    <i class="fas fa-file-pdf"></i> Unir PDF
+                </button>
+                <button class="nav-item" data-tool="split">
+                    <i class="fas fa-cut"></i> Dividir PDF
+                </button>
+                <button class="nav-item" data-tool="image-to-pdf">
+                    <i class="fas fa-image"></i> Imagen a PDF
+                </button>
+                <!-- Opciones futuras mostradas en el diseño -->
+                <button class="nav-item" disabled><i class="fas fa-edit"></i> Modificar PDF</button>
+                <button class="nav-item" disabled><i class="fas fa-expand"></i> Escanear</button>
+                <button class="nav-item" disabled><i class="fas fa-signature"></i> Notas y Firmas</button>
+                <div class="scroll-arrows">
+                    <i class="fas fa-chevron-up"></i>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </nav>
+
+            <!-- CONTENIDO DE LAS HERRAMIENTAS (PANEL DE ACCIÓN) -->
+            <div class="tool-content-panel">
+                
+                <!-- Panel 1: UNIR PDF (Activo por defecto) -->
+                <div class="tool-pane active" id="pane-merge">
+                    <div class="pane-split">
+                        
+                        <!-- Lado Izquierdo: Gestión de Archivos -->
+                        <div class="pane-files">
+                            <h3>Unir PDF</h3>
+                            <div class="file-action-buttons">
+                                <button class="btn-secondary" id="btn-upload-merge">Subir Archivos PDF</button>
+                                <button class="btn-secondary" disabled>Añadir más</button>
+                                <button class="btn-primary" id="btn-process-merge">Combinar</button>
+                            </div>
+                            
+                            <!-- Input de archivo oculto que se activará con los botones visuales -->
+                            <input type="file" id="merge-files" multiple accept="application/pdf" style="display:none;">
+                            
+                            <!-- Placeholder para la lista de archivos (Ver nota en JS) -->
+                            <p id="merge-status" class="status"></p>
+                        </div>
+                        
+                        <!-- Lado Derecho: Previsualización -->
+                        <div class="pane-preview">
+                            <div class="preview-header">
+                                <h3>Preview</h3>
+                            </div>
+                            <div class="preview-display">
+                                <div class="preview-placeholder">Sube archivos para ver la vista previa</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Panel 2: DIVIDIR PDF (Oculto) -->
+                <div class="tool-pane" id="pane-split">
+                    <div class="pane-split">
+                        <div class="pane-files">
+                            <h3>Dividir PDF</h3>
+                            <div class="file-action-buttons">
+                                <button class="btn-secondary" id="btn-upload-split">Subir Archivo PDF</button>
+                                <button class="btn-primary" id="btn-process-split">Dividir</button>
+                            </div>
+                            <input type="file" id="split-file" accept="application/pdf" style="display:none;">
+                            <p id="split-status" class="status"></p>
+                        </div>
+                        <div class="pane-preview">
+                            <div class="preview-header"><h3>Preview</h3></div>
+                            <div class="preview-display"><div class="preview-placeholder">Sube archivos para ver la vista previa</div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Panel 3: IMAGEN A PDF (Oculto) -->
+                <div class="tool-pane" id="pane-image-to-pdf">
+                    <div class="pane-split">
+                        <div class="pane-files">
+                            <h3>Imagen a PDF</h3>
+                            <div class="file-action-buttons">
+                                <button class="btn-secondary" id="btn-upload-img">Subir Imágenes (JPG/PNG)</button>
+                                <button class="btn-primary" id="btn-process-img">Convertir a PDF</button>
+                            </div>
+                            <input type="file" id="img-files" multiple accept="image/png, image/jpeg" style="display:none;">
+                            <p id="img2pdf-status" class="status"></p>
+                        </div>
+                        <div class="pane-preview">
+                            <div class="preview-header"><h3>Preview</h3></div>
+                            <div class="preview-display"><div class="preview-placeholder">Sube archivos para ver la vista previa</div></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div> <!-- fin .tool-content-panel -->
+        </div> <!-- fin .work-container -->
+    </main>
+
+    <!-- FOOTER LEGAL -->
+    <footer class="main-footer">
+        <div class="footer-container">
+            <p>PETIT ❤️ es una herramienta legal y protegida por derechos de autor, creada por <strong>MAUU SOFT</strong>. Desarrollado con ❤️ para ING. MAURICIO RAMÍREZ ALVARADO.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
