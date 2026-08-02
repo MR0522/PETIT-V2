@@ -1,11 +1,11 @@
 // API Key de CloudConvert configurada
-const CLOUDCONVERT_API_KEY = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiNGVlM2EzODdlYzIyODRjODI5NGQ1OGEzZmQ2OThlMTUyMDAwYmRmMTE1ZjM4ZjhhMTYxNGU5ZDRiNzIxMzJjMzA3ZGQ5MDhhZTBiNmE2MzAiLCJpYXQiOjE3ODU3MDEzNTcuMTIwNzQ3LCJuYmYiOjE3ODU3MDEzNTcuMTIwNzQ4LCJleHAiOjQ5NDEzNzQ5NTcuMTE1ODIxLCJzdWIiOiI0MTU2Njk5MCIsInNjb3BlcyI6WyJ0YXNrLnJlYWQiLCJ0YXNrLndyaXRlIl19.X5lRjj96i180gCCqEPlxLFgRzEgu_rihn3LgtL-2awBDCiCymtCu14Pckr6e2X9qjxLC6pPGFeHlFjLhFTmpsJ6sCFJ78wYiihGRpXGHrkkPFlrhJKImGFbtYWJWXOiQuTD0_LJ7KiDVBeV5mKNSLWmisMxMpw6S0NFSbiaDojbnwK23jQeqXZQzqIJA555SjnUNlda_s7t61aCPVqMBS_BempynIUzakol4v2dnsaMGaFdxqh-PyHh3z2jAZ7vivR-Dc2jURH9wRFx2-kU7Ry0PdaHK0C9hUtSYEHAgcCn7CRMMscuUyRP6QeT66ulOyqC4YTf3n-O-mvCcRlHemwEWyJCVKQ2Ye8wIn8uujj8qhgwGzJT8EZTxzB0cIRR5t81NbgTLmO4HZ2lc0-3M2GjU4UzvwBaICgVDC04VZG7ahHuDvfv0ayJkB9ccq1LwLyLZLcl3EraTqBypl6Hmxefe6p1GapGs6i30jX0v7Nqfkwx78lyXKHS2tSczn_PPcQkdo-PilLdJWwJd5S_h6Mh5s4_ieK8W-czZ_u1H5hAuXwALdiwn2NuV8WRjyZKabvE4J3TYkrt3bAc6IdA-5Se3znSkCnlX8B20otkIl5jkP1vWwHSJTUe7vmclWdEovaxwU87odeBAiNuJeOeXm-4J1qGRZeST0ydSqN3uQC8";
+const CLOUDCONVERT_API_KEY = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiNGVlM2EzODdlYzIyODRjODI5NGQ1OGEzZmQ2OThlMTUyMDAwYmRmMTE1ZjM4ZjhhMTYxNGU5ZDRiNzIxMzJjMzA3ZGQ5MDhhZTBiNmE2MzAiLCJpYXQiOjE3ODU3MDEzNTcuMTIwNzQ3LCJuYmYiOjE3ODU3MDEzNTcuMTIwNzQ4LCJleHAiOjQ5NDEzTZQzg0OThlMTUyMDAwYmRmMTE1ZjM4ZjhhMTYxNGU5ZDRiNzIxMzJjMzA3ZGQ5MDhhZTBiNmE2MzAiLCJpYXQiOjE3ODU3MDEzNTcuMTIwNzQ3LCJuYmYiOjE3ODU3MDEzNTcuMTIwNzQ4LCJleHAiOjQ5NDEzNzQ5NTcuMTE1ODIxLCJzdWIiOiI0MTU2Njk5MCIsInNjb3BlcyI6WyJ0YXNrLnJlYWQiLCJ0YXNrLndyaXRlIl19.X5lRjj96i180gCCqEPlxLFgRzEgu_rihn3LgtL-2awBDCiCymtCu14Pckr6e2X9qjxLC6pPGFeHlFjLhFTmpsJ6sCFJ78wYiihGRpXGHrkkPFlrhJKImGFbtYWJWXOiQuTD0_LJ7KiDVBeV5mKNSLWmisMxMpw6S0NFSbiaDojbnwK23jQeqXZQzqIJA555SjnUNlda_s7t61aCPVqMBS_BempynIUzakol4v2dnsaMGaFdxqh-PyHh3z2jAZ7vivR-Dc2jURH9wRFx2-kU7Ry0PdaHK0C9hUtSYEHAgcCn7CRMMscuUyRP6QeT66ulOyqC4YTf3n-O-mvCcRlHemwEWyJCVKQ2Ye8wIn8uujj8qhgwGzJT8EZTxzB0cIRR5t81NbgTLmO4HZ2lc0-3M2GjU4UzvwBaICgVDC04VZG7ahHuDvfv0ayJkB9ccq1LwLyLZLcl3EraTqBypl6Hmxefe6p1GapGs6i30jX0v7Nqfkwx78lyXKHS2tSczn_PPcQkdo-PilLdJWwJd5S_h6Mh5s4_ieK8W-czZ_u1H5hAuXwALdiwn2NuV8WRjyZKabvE4J3TYkrt3bAc6IdA-5Se3znSkCnlX8B20otkIl5jkP1vWwHSJTUe7vmclWdEovaxwU87odeBAiNuJeOeXm-4J1qGRZeST0ydSqN3uQC8";
 
 let currentTool = "merge";
 
 // Configuración de las herramientas
 const toolConfig = {
-    merge: { title: "Unir PDF", desc: "Selecciona 2 o más archivos PDF para unirlos.", accept: ".pdf", multiple: true },
+    merge: { title: "Unir PDF", desc: "Selecciona 2 o más archivos PDF para unirlos en uno solo.", accept: ".pdf", multiple: true },
     split: { title: "Dividir PDF", desc: "Selecciona un archivo PDF para extraer sus páginas.", accept: ".pdf", multiple: false },
     img2pdf: { title: "Imagen a PDF", desc: "Selecciona imágenes (JPG, PNG) para convertirlas a PDF.", accept: "image/jpeg, image/png", multiple: true },
     word2pdf: { title: "Word a PDF", desc: "Convierte tus documentos .docx a PDF.", accept: ".docx, .doc", multiple: false, convertTo: "pdf" },
@@ -37,40 +37,170 @@ document.querySelectorAll('.nav-item').forEach(button => {
     });
 });
 
-// Botón de procesamiento
+// Botón de procesamiento principal
 document.getElementById('btn-process').addEventListener('click', async () => {
     const input = document.getElementById('main-file-input');
     const statusBox = document.getElementById('status-box');
 
-    if (!input.files.length) {
-        alert("Por favor selecciona un archivo.");
+    if (!input.files || input.files.length === 0) {
+        alert("Por favor selecciona al menos un archivo.");
         return;
     }
 
     const cleanKey = CLOUDCONVERT_API_KEY.trim();
 
-    // Si es conversión de Office usa CloudConvert API
-    if (["word2pdf", "excel2pdf", "ppt2pdf", "pdf2word", "pdf2excel", "pdf2ppt"].includes(currentTool)) {
+    // 1. Procesamiento local
+    if (currentTool === "merge") {
+        await mergePDFs(input.files);
+    } else if (currentTool === "split") {
+        await splitPDF(input.files[0]);
+    } else if (currentTool === "img2pdf") {
+        await imagesToPDF(input.files);
+    } 
+    // 2. Procesamiento en la nube (CloudConvert)
+    else if (["word2pdf", "excel2pdf", "ppt2pdf", "pdf2word", "pdf2excel", "pdf2ppt"].includes(currentTool)) {
         if (!cleanKey) {
             statusBox.style.color = "red";
-            statusBox.innerText = "⚠️ Debes ingresar tu API Key de CloudConvert en script.js para usar las conversiones de Office.";
+            statusBox.innerText = "⚠️ Debes ingresar tu API Key de CloudConvert para usar esta función.";
             return;
         }
         await convertWithCloudConvert(input.files[0], toolConfig[currentTool].convertTo, cleanKey);
-    } else {
-        statusBox.style.color = "blue";
-        statusBox.innerText = "Procesando localmente...";
     }
 });
 
-// Función de Conversión usando la API de CloudConvert
+// =======================================================
+// FUNCIONES DE PROCESAMIENTO LOCAL (pdf-lib & JSZip)
+// =======================================================
+
+// 1. Unir archivos PDF
+async function mergePDFs(files) {
+    const statusBox = document.getElementById('status-box');
+    if (files.length < 2) {
+        alert("Por favor selecciona al menos 2 archivos PDF para unirlos.");
+        return;
+    }
+
+    statusBox.style.color = "orange";
+    statusBox.innerText = "⏳ Uniendo archivos PDF localmente...";
+
+    try {
+        const mergedPdf = await PDFLib.PDFDocument.create();
+
+        for (let file of files) {
+            const arrayBuffer = await file.arrayBuffer();
+            const pdf = await PDFLib.PDFDocument.load(arrayBuffer);
+            const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+            copiedPages.forEach((page) => mergedPdf.addPage(page));
+        }
+
+        const mergedPdfBytes = await mergedPdf.save();
+        downloadBlob(mergedPdfBytes, "PETIT_unido.pdf", "application/pdf");
+
+        statusBox.style.color = "green";
+        statusBox.innerText = "✅ ¡Archivos unidos con éxito! La descarga ha comenzado.";
+    } catch (err) {
+        console.error(err);
+        statusBox.style.color = "red";
+        statusBox.innerText = "❌ Error al unir los PDF. Asegúrate de que los archivos no estén protegidos con contraseña.";
+    }
+}
+
+// 2. Dividir archivo PDF en páginas individuales (Zip)
+async function splitPDF(file) {
+    const statusBox = document.getElementById('status-box');
+    statusBox.style.color = "orange";
+    statusBox.innerText = "⏳ Dividiendo PDF página por página...";
+
+    try {
+        const arrayBuffer = await file.arrayBuffer();
+        const pdf = await PDFLib.PDFDocument.load(arrayBuffer);
+        const pageCount = pdf.getPageCount();
+
+        const zip = new JSZip();
+
+        for (let i = 0; i < pageCount; i++) {
+            const newPdf = await PDFLib.PDFDocument.create();
+            const [copiedPage] = await newPdf.copyPages(pdf, [i]);
+            newPdf.addPage(copiedPage);
+            const pdfBytes = await newPdf.save();
+            zip.file(`pagina_${i + 1}.pdf`, pdfBytes);
+        }
+
+        statusBox.innerText = "⏳ Empaquetando en archivo ZIP...";
+        const zipBlob = await zip.generateAsync({ type: "blob" });
+        downloadBlob(zipBlob, "PETIT_paginas_divididas.zip", "application/zip");
+
+        statusBox.style.color = "green";
+        statusBox.innerText = "✅ ¡PDF dividido con éxito! Descargando paquete ZIP.";
+    } catch (err) {
+        console.error(err);
+        statusBox.style.color = "red";
+        statusBox.innerText = "❌ Ocurrió un error al intentar dividir el archivo PDF.";
+    }
+}
+
+// 3. Convertir imágenes (JPG, PNG) a PDF
+async function imagesToPDF(files) {
+    const statusBox = document.getElementById('status-box');
+    statusBox.style.color = "orange";
+    statusBox.innerText = "⏳ Convirtiendo imágenes a PDF...";
+
+    try {
+        const pdfDoc = await PDFLib.PDFDocument.create();
+
+        for (let file of files) {
+            const imageBytes = await file.arrayBuffer();
+            let image;
+            if (file.type === "image/png") {
+                image = await pdfDoc.embedPng(imageBytes);
+            } else {
+                image = await pdfDoc.embedJpg(imageBytes);
+            }
+
+            const page = pdfDoc.addPage([image.width, image.height]);
+            page.drawImage(image, {
+                x: 0,
+                y: 0,
+                width: image.width,
+                height: image.height,
+            });
+        }
+
+        const pdfBytes = await pdfDoc.save();
+        downloadBlob(pdfBytes, "PETIT_imagenes.pdf", "application/pdf");
+
+        statusBox.style.color = "green";
+        statusBox.innerText = "✅ ¡Imágenes convertidas a PDF con éxito!";
+    } catch (err) {
+        console.error(err);
+        statusBox.style.color = "red";
+        statusBox.innerText = "❌ Error al procesar las imágenes. Asegúrate de que sean formato JPG o PNG.";
+    }
+}
+
+// Función auxiliar para forzar la descarga de archivos Blob
+function downloadBlob(data, fileName, mimeType) {
+    const blob = new Blob([data], { type: mimeType });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+// =======================================================
+// FUNCIÓN DE CONVERSIÓN EN LA NUBE (CloudConvert API V2)
+// =======================================================
 async function convertWithCloudConvert(file, outputFormat, apiKey) {
     const statusBox = document.getElementById('status-box');
     try {
         statusBox.style.color = "orange";
         statusBox.innerText = "⏳ Creando tarea de conversión en la nube...";
 
-        // 1. Crear Job (incluye el nombre exacto del archivo)
+        // 1. Crear Job
         const jobResponse = await fetch('https://api.cloudconvert.com/v2/jobs', {
             method: 'POST',
             headers: {
@@ -131,7 +261,7 @@ async function convertWithCloudConvert(file, outputFormat, apiKey) {
             if (exportTask.status === 'error') throw new Error("Error durante la conversión.");
         }
 
-        // 4. Descargar archivo resultativo
+        // 4. Descargar
         statusBox.style.color = "green";
         statusBox.innerText = "✅ ¡Conversión exitosa! Descargando...";
         const fileUrl = exportTask.result.files[0].url;
