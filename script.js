@@ -47,43 +47,49 @@ document.getElementById('btn-process').addEventListener('click', async () => {
         return;
     }
 
+    const cleanKey = CLOUDCONVERT_API_KEY.trim();
+
     // Si es conversión de Office usa CloudConvert API
     if (["word2pdf", "excel2pdf", "ppt2pdf", "pdf2word", "pdf2excel", "pdf2ppt"].includes(currentTool)) {
-        if (CLOUDCONVERT_API_KEY === "TU_API_KEY_DE_CLOUDCONVERT_AQUI") {
+        if (!cleanKey || cleanKey.includes("TU_API_KEY")) {
             statusBox.style.color = "red";
             statusBox.innerText = "⚠️ Debes ingresar tu API Key de CloudConvert en script.js para usar las conversiones de Office.";
             return;
         }
-        await convertWithCloudConvert(input.files[0], toolConfig[currentTool].convertTo);
+        await convertWithCloudConvert(input.files[0], toolConfig[currentTool].convertTo, cleanKey);
     } else {
         statusBox.style.color = "blue";
         statusBox.innerText = "Procesando localmente...";
-        // Aquí corren las funciones locales (Unir, Dividir, Imagen a PDF)
     }
 });
 
 // Función de Conversión usando la API de CloudConvert
-async function convertWithCloudConvert(file, outputFormat) {
+async function convertWithCloudConvert(file, outputFormat, apiKey) {
     const statusBox = document.getElementById('status-box');
     try {
         statusBox.style.color = "orange";
         statusBox.innerText = "⏳ Creando tarea de conversión en la nube...";
 
-        // 1. Crear Job
+        // 1. Crear Job (Operación corregida a import/upload)
         const jobResponse = await fetch('https://api.cloudconvert.com/v2/jobs', {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${CLOUDCONVERT_API_KEY}`,
+                'Authorization': `Bearer ${apiKey}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
                 "tasks": {
-                    "import-file": { "operation": "upload" },
+                    "import-file": { "operation": "import/upload" },
                     "convert-file": { "operation": "convert", "input": "import-file", "output_format": outputFormat },
                     "export-file": { "operation": "export/url", "input": "convert-file" }
                 }
             })
         });
+
+        if (!jobResponse.ok) {
+            const errData = await jobResponse.json();
+            throw new Error(errData.message || "No se pudo iniciar la tarea en CloudConvert.");
+        }
 
         const jobData = await jobResponse.json();
         const uploadTask = jobData.data.tasks.find(t => t.name === 'import-file');
@@ -96,32 +102,39 @@ async function convertWithCloudConvert(file, outputFormat) {
         }
         formData.append('file', file);
 
-        await fetch(uploadTask.result.form.url, { method: 'POST', body: formData });
+        const uploadRes = await fetch(uploadTask.result.form.url, { method: 'POST', body: formData });
+        if (!uploadRes.ok) throw new Error("Error al subir el archivo a la nube.");
 
         // 3. Esperar finalización
         statusBox.innerText = "⏳ Convirtiendo documento...";
         let exportTask;
         while (true) {
-            await new Promise(r => setTimeout(r, 3000));
+            await new Promise(r => setTimeout(r, 2000));
             const checkRes = await fetch(`https://api.cloudconvert.com/v2/jobs/${jobData.data.id}`, {
-                headers: { 'Authorization': `Bearer ${CLOUDCONVERT_API_KEY}` }
+                headers: { 'Authorization': `Bearer ${apiKey}` }
             });
             const checkData = await checkRes.json();
             exportTask = checkData.data.tasks.find(t => t.name === 'export-file');
             
             if (exportTask.status === 'finished') break;
-            if (exportTask.status === 'error') throw new Error("Error en la conversión.");
+            if (exportTask.status === 'error') throw new Error("Error durante el procesamiento del archivo.");
         }
 
         // 4. Descargar
         statusBox.style.color = "green";
         statusBox.innerText = "✅ ¡Conversión exitosa! Descargando...";
         const fileUrl = exportTask.result.files[0].url;
-        window.location.href = fileUrl;
+        
+        const a = document.createElement('a');
+        a.href = fileUrl;
+        a.download = file.name.substring(0, file.name.lastIndexOf('.')) + '.' + outputFormat;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
 
     } catch (error) {
         console.error(error);
         statusBox.style.color = "red";
-        statusBox.innerText = "❌ Ocurrió un error durante la conversión.";
+        statusBox.innerText = `❌ ${error.message || "Ocurrió un error durante la conversión."}`;
     }
 }
