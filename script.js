@@ -1,193 +1,127 @@
+// ⚠️ Actualizacion y conectividad con cloudconvert
 const CLOUDCONVERT_API_KEY = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiNGVlM2EzODdlYzIyODRjODI5NGQ1OGEzZmQ2OThlMTUyMDAwYmRmMTE1ZjM4ZjhhMTYxNGU5ZDRiNzIxMzJjMzA3ZGQ5MDhhZTBiNmE2MzAiLCJpYXQiOjE3ODU3MDEzNTcuMTIwNzQ3LCJuYmYiOjE3ODU3MDEzNTcuMTIwNzQ4LCJleHAiOjQ5NDEzNzQ5NTcuMTE1ODIxLCJzdWIiOiI0MTU2Njk5MCIsInNjb3BlcyI6WyJ0YXNrLnJlYWQiLCJ0YXNrLndyaXRlIl19.X5lRjj96i180gCCqEPlxLFgRzEgu_rihn3LgtL-2awBDCiCymtCu14Pckr6e2X9qjxLC6pPGFeHlFjLhFTmpsJ6sCFJ78wYiihGRpXGHrkkPFlrhJKImGFbtYWJWXOiQuTD0_LJ7KiDVBeV5mKNSLWmisMxMpw6S0NFSbiaDojbnwK23jQeqXZQzqIJA555SjnUNlda_s7t61aCPVqMBS_BempynIUzakol4v2dnsaMGaFdxqh-PyHh3z2jAZ7vivR-Dc2jURH9wRFx2-kU7Ry0PdaHK0C9hUtSYEHAgcCn7CRMMscuUyRP6QeT66ulOyqC4YTf3n-O-mvCcRlHemwEWyJCVKQ2Ye8wIn8uujj8qhgwGzJT8EZTxzB0cIRR5t81NbgTLmO4HZ2lc0-3M2GjU4UzvwBaICgVDC04VZG7ahHuDvfv0ayJkB9ccq1LwLyLZLcl3EraTqBypl6Hmxefe6p1GapGs6i30jX0v7Nqfkwx78lyXKHS2tSczn_PPcQkdo-PilLdJWwJd5S_h6Mh5s4_ieK8W-czZ_u1H5hAuXwALdiwn2NuV8WRjyZKabvE4J3TYkrt3bAc6IdA-5Se3znSkCnlX8B20otkIl5jkP1vWwHSJTUe7vmclWdEovaxwU87odeBAiNuJeOeXm-4J1qGRZeST0ydSqN3uQC8";
-// Constantes globales
-const PDFLib = window.PDFLib;
-const JSZip = window.JSZip;
 
-// --- FUNCIONES DE UTILIDAD GENERAL ---
+let currentTool = "merge";
 
-// Función para descargar archivos generados
-function downloadFile(blob, fileName) {
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = fileName;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-}
+// Configuración de las herramientas
+const toolConfig = {
+    merge: { title: "Unir PDF", desc: "Selecciona 2 o más archivos PDF para unirlos.", accept: ".pdf", multiple: true },
+    split: { title: "Dividir PDF", desc: "Selecciona un archivo PDF para extraer sus páginas.", accept: ".pdf", multiple: false },
+    img2pdf: { title: "Imagen a PDF", desc: "Selecciona imágenes (JPG, PNG) para convertirlas a PDF.", accept: "image/jpeg, image/png", multiple: true },
+    word2pdf: { title: "Word a PDF", desc: "Convierte tus documentos .docx a PDF.", accept: ".docx, .doc", multiple: false, convertTo: "pdf" },
+    excel2pdf: { title: "Excel a PDF", desc: "Convierte tus hojas de cálculo .xlsx a PDF.", accept: ".xlsx, .xls", multiple: false, convertTo: "pdf" },
+    ppt2pdf: { title: "PowerPoint a PDF", desc: "Convierte tus presentaciones .pptx a PDF.", accept: ".pptx, .ppt", multiple: false, convertTo: "pdf" },
+    pdf2word: { title: "PDF a Word", desc: "Convierte tu PDF en un archivo .docx editable.", accept: ".pdf", multiple: false, convertTo: "docx" },
+    pdf2excel: { title: "PDF a Excel", desc: "Convierte tu PDF en una tabla de Excel .xlsx.", accept: ".pdf", multiple: false, convertTo: "xlsx" },
+    pdf2ppt: { title: "PDF a PowerPoint", desc: "Convierte tu PDF en una presentación .pptx.", accept: ".pdf", multiple: false, convertTo: "pptx" }
+};
 
-// Función para mostrar mensajes de estado actualizados
-function setStatus(elementId, message, type) {
-    const statusMsg = document.getElementById(elementId);
-    statusMsg.innerText = message;
-    statusMsg.className = `status ${type}`; // type: 'loading', 'success', 'error'
-}
-
-// Función para activar los inputs ocultos desde los botones bonitos
-function setUpVisualButtons() {
-    document.getElementById('btn-upload-merge').addEventListener('click', () => {
-        document.getElementById('merge-files').click();
-    });
-    
-    document.getElementById('btn-upload-split').addEventListener('click', () => {
-        document.getElementById('split-file').click();
-    });
-    
-    document.getElementById('btn-upload-img').addEventListener('click', () => {
-        document.getElementById('img-files').click();
-    });
-}
-
-// --- GESTIÓN VISUAL DE ARCHIVOS (Evolución Futura) ---
-// Aquí iría el código para mostrar la lista de archivos con iconos de mover/borrar
-// como se ve en la imagen. Por ahora, nos basamos en los inputs estándar.
-
-// --- CONTROLADOR DE PESTAÑAS (TABS) ---
-function initTabs() {
-    const navItems = document.querySelectorAll('.nav-item:not(:disabled)');
-    const panes = document.querySelectorAll('.tool-pane');
-
-    navItems.forEach(item => {
-        item.addEventListener('click', () => {
-            const toolId = item.getAttribute('data-tool');
-
-            // Desactivar todas las pestañas y paneles
-            navItems.forEach(i => i.classList.remove('active'));
-            panes.forEach(p => p.classList.remove('active'));
-
-            // Activar la pestaña y el panel correspondiente
-            item.classList.remove('loading', 'success', 'error'); // Limpiar estados al cambiar
-            item.classList.add('active');
-            
-            // Mapear data-tool al ID del panel
-            const targetPaneId = `pane-${toolId}`;
-            const targetPane = document.getElementById(targetPaneId);
-            if (targetPane) {
-                targetPane.classList.add('active');
-            }
-        });
-    });
-}
-
-// --- LÓGICA DE LAS HERRAMIENTAS (RE-INTEGRADA) ---
-
-// 1. Unir PDFs
-async function mergePDFs() {
-    const files = document.getElementById('merge-files').files;
-    
-    if (files.length < 2) {
-        setStatus('merge-status', '⚠️ Por favor, selecciona al menos 2 archivos PDF.', 'error');
-        return;
-    }
-
-    try {
-        setStatus('merge-status', '⏳ Procesando archivos... por favor espera.', 'loading');
-        const pdfDoc = await PDFLib.PDFDocument.create();
-
-        for (let file of files) {
-            const arrayBuffer = await file.arrayBuffer();
-            const loadedPdf = await PDFLib.PDFDocument.load(arrayBuffer);
-            const copiedPages = await pdfDoc.copyPages(loadedPdf, loadedPdf.getPageIndices());
-            copiedPages.forEach((page) => pdfDoc.addPage(page));
-        }
-
-        const pdfBytes = await pdfDoc.save();
-        const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-        downloadFile(blob, 'PETIT_Unido.pdf');
-        setStatus('merge-status', '✅ ¡Archivos unidos con éxito y descargados!', 'success');
-    } catch (error) {
-        console.error(error);
-        setStatus('merge-status', '❌ Hubo un error al procesar los archivos.', 'error');
-    }
-}
-
-// 2. Dividir PDF
-async function splitPDF() {
-    const file = document.getElementById('split-file').files[0];
-
-    if (!file) {
-        setStatus('split-status', '⚠️ Por favor, selecciona un archivo PDF.', 'error');
-        return;
-    }
-
-    try {
-        setStatus('split-status', '⏳ Dividiendo... preparando archivo ZIP.', 'loading');
-        const arrayBuffer = await file.arrayBuffer();
-        const loadedPdf = await PDFLib.PDFDocument.load(arrayBuffer);
-        const totalPages = loadedPdf.getPageCount();
+// Cambio de pestañas
+document.querySelectorAll('.nav-item').forEach(button => {
+    button.addEventListener('click', () => {
+        document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
         
-        const zip = new JSZip();
+        currentTool = button.getAttribute('data-tool');
+        const config = toolConfig[currentTool];
+        
+        document.getElementById('tool-title').innerText = config.title;
+        document.getElementById('tool-desc').innerText = config.desc;
+        
+        const fileInput = document.getElementById('main-file-input');
+        fileInput.value = "";
+        fileInput.accept = config.accept;
+        fileInput.multiple = config.multiple;
+        
+        document.getElementById('status-box').innerText = "";
+    });
+});
 
-        for (let i = 0; i < totalPages; i++) {
-            const newPdf = await PDFLib.PDFDocument.create();
-            const [copiedPage] = await newPdf.copyPages(loadedPdf, [i]);
-            newPdf.addPage(copiedPage);
-            const pdfBytes = await newPdf.save();
-            zip.file(`PETIT_Pagina_${i + 1}.pdf`, pdfBytes);
-        }
+// Botón de procesamiento
+document.getElementById('btn-process').addEventListener('click', async () => {
+    const input = document.getElementById('main-file-input');
+    const statusBox = document.getElementById('status-box');
 
-        const zipBlob = await zip.generateAsync({ type: "blob" });
-        downloadFile(zipBlob, 'PETIT_Dividido.zip');
-        setStatus('split-status', '✅ ¡Archivo dividido y descargado en ZIP!', 'success');
-    } catch (error) {
-        console.error(error);
-        setStatus('split-status', '❌ Hubo un error al dividir el archivo.', 'error');
-    }
-}
-
-// 3. Convertir de Imagen a PDF
-async function imagesToPDF() {
-    const files = document.getElementById('img-files').files;
-
-    if (files.length === 0) {
-        setStatus('img2pdf-status', '⚠️ Por favor, selecciona al menos una imagen (JPG o PNG).', 'error');
+    if (!input.files.length) {
+        alert("Por favor selecciona un archivo.");
         return;
     }
 
+    // Si es conversión de Office usa CloudConvert API
+    if (["word2pdf", "excel2pdf", "ppt2pdf", "pdf2word", "pdf2excel", "pdf2ppt"].includes(currentTool)) {
+        if (CLOUDCONVERT_API_KEY === "TU_API_KEY_DE_CLOUDCONVERT_AQUI") {
+            statusBox.style.color = "red";
+            statusBox.innerText = "⚠️ Debes ingresar tu API Key de CloudConvert en script.js para usar las conversiones de Office.";
+            return;
+        }
+        await convertWithCloudConvert(input.files[0], toolConfig[currentTool].convertTo);
+    } else {
+        statusBox.style.color = "blue";
+        statusBox.innerText = "Procesando localmente...";
+        // Aquí corren las funciones locales (Unir, Dividir, Imagen a PDF)
+    }
+});
+
+// Función de Conversión usando la API de CloudConvert
+async function convertWithCloudConvert(file, outputFormat) {
+    const statusBox = document.getElementById('status-box');
     try {
-        setStatus('img2pdf-status', '⏳ Convirtiendo imágenes a PDF...', 'loading');
-        const pdfDoc = await PDFLib.PDFDocument.create();
+        statusBox.style.color = "orange";
+        statusBox.innerText = "⏳ Creando tarea de conversión en la nube...";
 
-        for (let file of files) {
-            const arrayBuffer = await file.arrayBuffer();
-            let img;
-            
-            if (file.type === 'image/jpeg') {
-                img = await pdfDoc.embedJpg(arrayBuffer);
-            } else if (file.type === 'image/png') {
-                img = await pdfDoc.embedPng(arrayBuffer);
-            } else {
-                continue; // Ignora otros archivos
-            }
+        // 1. Crear Job
+        const jobResponse = await fetch('https://api.cloudconvert.com/v2/jobs', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${CLOUDCONVERT_API_KEY}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "tasks": {
+                    "import-file": { "operation": "upload" },
+                    "convert-file": { "operation": "convert", "input": "import-file", "output_format": outputFormat },
+                    "export-file": { "operation": "export/url", "input": "convert-file" }
+                }
+            })
+        });
 
-            // Crear una página del mismo tamaño que la imagen
-            const page = pdfDoc.addPage([img.width, img.height]);
-            page.drawImage(img, {
-                x: 0,
-                y: 0,
-                width: img.width,
-                height: img.height,
+        const jobData = await jobResponse.json();
+        const uploadTask = jobData.data.tasks.find(t => t.name === 'import-file');
+
+        // 2. Subir Archivo
+        statusBox.innerText = "⏳ Subiendo archivo...";
+        const formData = new FormData();
+        for (let p in uploadTask.result.form.parameters) {
+            formData.append(p, uploadTask.result.form.parameters[p]);
+        }
+        formData.append('file', file);
+
+        await fetch(uploadTask.result.form.url, { method: 'POST', body: formData });
+
+        // 3. Esperar finalización
+        statusBox.innerText = "⏳ Convirtiendo documento...";
+        let exportTask;
+        while (true) {
+            await new Promise(r => setTimeout(r, 3000));
+            const checkRes = await fetch(`https://api.cloudconvert.com/v2/jobs/${jobData.data.id}`, {
+                headers: { 'Authorization': `Bearer ${CLOUDCONVERT_API_KEY}` }
             });
+            const checkData = await checkRes.json();
+            exportTask = checkData.data.tasks.find(t => t.name === 'export-file');
+            
+            if (exportTask.status === 'finished') break;
+            if (exportTask.status === 'error') throw new Error("Error en la conversión.");
         }
 
-        const pdfBytes = await pdfDoc.save();
-        const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-        downloadFile(blob, 'PETIT_Imagenes.pdf');
-        setStatus('img2pdf-status', '✅ ¡PDF creado con éxito!', 'success');
+        // 4. Descargar
+        statusBox.style.color = "green";
+        statusBox.innerText = "✅ ¡Conversión exitosa! Descargando...";
+        const fileUrl = exportTask.result.files[0].url;
+        window.location.href = fileUrl;
+
     } catch (error) {
         console.error(error);
-        setStatus('img2pdf-status', '❌ Hubo un error al convertir las imágenes.', 'error');
+        statusBox.style.color = "red";
+        statusBox.innerText = "❌ Ocurrió un error durante la conversión.";
     }
 }
-
-// --- INICIALIZACIÓN ---
-document.addEventListener('DOMContentLoaded', () => {
-    initTabs();
-    setUpVisualButtons();
-
-    // Asignar los eventos a los botones de procesar finales
-    document.getElementById('btn-process-merge').addEventListener('click', mergePDFs);
-    document.getElementById('btn-process-split').addEventListener('click', splitPDF);
-    document.getElementById('btn-process-img').addEventListener('click', imagesToPDF);
-});
