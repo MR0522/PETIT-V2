@@ -6,7 +6,7 @@
     
     <!-- ETIQUETA DE VERIFICACIÓN DE GOOGLE -->
     <meta name="google-site-verification" content="0VM_MeKh-FkHCF4sI-v6sSfX25-G5qcyzUs0dGqo2xA" />
-
+    <link rel="manifest" href="manifest.json">
     <!-- TÍTULO OPTIMIZADO PARA GOOGLE -->
     <title>PETIT ❤️ - Convertidor y Editor de PDF Online Gratis | MAUU SOFT</title>
     
@@ -30,6 +30,11 @@
     <!-- Librerías locales para PDF y ZIP -->
     <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js');
+  }
+</script>
 </head>
 <body>
     
