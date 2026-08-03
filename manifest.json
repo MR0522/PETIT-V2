@@ -1,0 +1,17 @@
+{
+  "name": "PETIT-V2 Convertidor PDF",
+  "short_name": "PETIT",
+  "description": "Convertidor y editor de archivos PDF y Office.",
+  "start_url": "/PETIT-V2/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#e91e63",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/337/337946.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
