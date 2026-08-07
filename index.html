@@ -1,18 +1,246 @@
+<!DOCTYPE html>
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- ETIQUETA DE VERIFICACIÓN DE GOOGLE SEARCH CONSOLE -->
+    <!-- Google Verification -->
     <meta name="google-site-verification" content="0VM_MeKh-FkHCF4sI-v6sSfX25-G5qcyzUs0dGqo2xA" />
     
-    <!-- PWA Y MANIFIESTO -->
+    <!-- PWA & Theme -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0b3b82">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="PETIT">
     
-    <!-- ÍCONOS Y FAVICONS -->
+    <!-- Icons -->
     <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
     <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
+
+    <title>PETIT ❤️ - Suite Completa de PDF e Imágenes Online Gratis | MAUU SOFT</title>
+    <meta name="description" content="Todas las herramientas para unir, dividir, proteger, desbloquear y convertir PDF e imágenes en un solo lugar. Desarrollado por MAUU SOFT.">
+    
+    <!-- FontAwesome & Custom CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Libraries -->
+    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+</head>
+<body>
+
+    <!-- CABECERA PRINCIPAL ESTILO PDF24 -->
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="brand">
+                <i class="fas fa-file-pdf logo-icon"></i>
+                <span class="brand-title">PETIT-V2 <span class="heart">❤️</span></span>
+            </div>
+            
+            <!-- Botones para Descargar App PWA -->
+            <div class="app-downloads">
+                <button id="btnInstallAndroid" class="btn-download btn-android">
+                    <i class="fab fa-android"></i> Instalar Android
+                </button>
+                <button id="btnInstallWindows" class="btn-download btn-windows">
+                    <i class="fab fa-windows"></i> Instalar Windows
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO / BANNER PRINCIPAL -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>PETIT Tools</h1>
+            <p>Herramientas PDF e Imágenes en línea gratuitas, privadas y fáciles de usar</p>
+            
+            <!-- Buscador rápido de herramientas -->
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="toolSearch" placeholder="Buscar herramienta (ej. Unir, Proteger, Word, PNG)...">
+            </div>
+        </div>
+    </section>
+
+    <!-- REJILLA DE HERRAMIENTAS (PANEL GRID ESTILO PDF24) -->
+    <main class="main-container">
+        <div class="tools-grid" id="toolsGrid">
+            
+            <!-- Tarjeta 1: Unir PDF -->
+            <div class="tool-card" data-tool="merge" data-keywords="unir juntar combinar pdf">
+                <div class="card-icon"><i class="fas fa-object-group"></i></div>
+                <h3>Unir PDF</h3>
+                <p>Combina múltiples archivos PDF en un solo documento.</p>
+            </div>
+
+            <!-- Tarjeta 2: Dividir PDF -->
+            <div class="tool-card" data-tool="split" data-keywords="dividir cortar separar extraer pdf">
+                <div class="card-icon"><i class="fas fa-cut"></i></div>
+                <h3>Dividir PDF</h3>
+                <p>Separa páginas de un documento PDF en archivos individuales.</p>
+            </div>
+
+            <!-- Tarjeta 3: Desbloquear PDF -->
+            <div class="tool-card" data-tool="unlock" data-keywords="desbloquear quitar clave contraseña pdf">
+                <div class="card-icon"><i class="fas fa-unlock"></i></div>
+                <h3>Desbloquear PDF</h3>
+                <p>Elimina la contraseña de un archivo PDF protegido.</p>
+            </div>
+
+            <!-- Tarjeta 4: Proteger PDF -->
+            <div class="tool-card" data-tool="protect" data-keywords="proteger clave contraseña encriptar pdf">
+                <div class="card-icon"><i class="fas fa-lock"></i></div>
+                <h3>Proteger PDF</h3>
+                <p>Añade una contraseña de seguridad a tu archivo PDF.</p>
+            </div>
+
+            <!-- Tarjeta 5: Girar PDF -->
+            <div class="tool-card" data-tool="rotate" data-keywords="girar rotar orientar pdf">
+                <div class="card-icon"><i class="fas fa-redo"></i></div>
+                <h3>Girar PDF</h3>
+                <p>Rota las páginas de tu PDF 90°, 180° o 270°.</p>
+            </div>
+
+            <!-- Tarjeta 6: Imagen a PDF -->
+            <div class="tool-card" data-tool="img2pdf" data-keywords="imagen jpg png foto a pdf">
+                <div class="card-icon"><i class="fas fa-images"></i></div>
+                <h3>Imágenes a PDF</h3>
+                <p>Convierte tus fotos e imágenes (JPG, PNG) a formato PDF.</p>
+            </div>
+
+            <!-- Tarjeta 7: JPG ↔ PNG -->
+            <div class="tool-card" data-tool="imgconvert" data-keywords="jpg png converitir imagen foto">
+                <div class="card-icon"><i class="fas fa-exchange-alt"></i></div>
+                <h3>Convertidor JPG ↔ PNG</h3>
+                <p>Cambia el formato y calidad de tus imágenes de forma local.</p>
+            </div>
+
+            <!-- Tarjeta 8: Word a PDF -->
+            <div class="tool-card" data-tool="word2pdf" data-keywords="word docx doc a pdf">
+                <div class="card-icon"><i class="fas fa-file-word"></i></div>
+                <h3>Word a PDF</h3>
+                <p>Convierte tus documentos .docx a PDF profesional.</p>
+            </div>
+
+            <!-- Tarjeta 9: Excel a PDF -->
+            <div class="tool-card" data-tool="excel2pdf" data-keywords="excel xlsx xls a pdf">
+                <div class="card-icon"><i class="fas fa-file-excel"></i></div>
+                <h3>Excel a PDF</h3>
+                <p>Convierte hojas de cálculo de Excel a formato PDF.</p>
+            </div>
+
+            <!-- Tarjeta 10: PPT a PDF -->
+            <div class="tool-card" data-tool="ppt2pdf" data-keywords="powerpoint pptx ppt a pdf">
+                <div class="card-icon"><i class="fas fa-file-powerpoint"></i></div>
+                <h3>PPT a PDF</h3>
+                <p>Convierte presentaciones de PowerPoint a PDF.</p>
+            </div>
+
+            <!-- Tarjeta 11: PDF a Word -->
+            <div class="tool-card" data-tool="pdf2word" data-keywords="pdf a word docx doc">
+                <div class="card-icon"><i class="fas fa-file-word text-blue"></i></div>
+                <h3>PDF a Word</h3>
+                <p>Convierte PDF a un documento Word editable.</p>
+            </div>
+
+            <!-- Tarjeta 12: PDF a Excel -->
+            <div class="tool-card" data-tool="pdf2excel" data-keywords="pdf a excel xlsx">
+                <div class="card-icon"><i class="fas fa-file-excel text-green"></i></div>
+                <h3>PDF a Excel</h3>
+                <p>Extrae tablas de tus PDF a archivos de Excel.</p>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- MODAL / ÁREA DE TRABAJO DE HERRAMIENTA ACTIVA -->
+    <div class="modal-overlay" id="workModal">
+        <div class="modal-content">
+            <button class="modal-close" id="closeModal">&times;</button>
+
+            <!-- Panel Estándar / PDF -->
+            <div id="standard-pane">
+                <h2 id="tool-title" class="modal-title">Unir PDF</h2>
+                <p id="tool-desc" class="modal-desc">Selecciona los archivos para procesar.</p>
+
+                <!-- Zona de Carga -->
+                <div class="file-upload-box">
+                    <input type="file" id="main-file-input" class="file-input">
+                    <div class="upload-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                    <p>Arrastra tus archivos aquí o <strong>haz clic para seleccionar</strong></p>
+                </div>
+
+                <!-- Campo dinámico para contraseña de PDF protegidos -->
+                <div class="password-group" id="passwordGroup" style="display: none;">
+                    <label for="pdfPassword"><i class="fas fa-key"></i> Contraseña del PDF (si aplica):</label>
+                    <input type="password" id="pdfPassword" class="input-text" placeholder="Escribe la clave del archivo">
+                </div>
+
+                <!-- Control de Rotación (para la herramienta Girar) -->
+                <div class="rotation-group" id="rotationGroup" style="display: none;">
+                    <label for="rotateDegrees"><i class="fas fa-undo"></i> Ángulo de rotación:</label>
+                    <select id="rotateDegrees" class="select-input">
+                        <option value="90">90° Horario</option>
+                        <option value="180">180° Invertido</option>
+                        <option value="270">270° Antihorario</option>
+                    </select>
+                </div>
+
+                <button class="btn-execute" id="btn-process">⚡ Ejecutar Acción</button>
+                <div id="status-box" class="status-msg"></div>
+            </div>
+
+            <!-- Panel Especial para Conversión de Imágenes -->
+            <div id="imgconvert-pane" style="display: none;">
+                <h2 class="modal-title">Convertidor de Imágenes (JPG ↔ PNG)</h2>
+                <p class="modal-desc">Convierte y ajusta tus imágenes de forma local y 100% privada.</p>
+
+                <div class="file-upload-box" id="imgDropZone">
+                    <input type="file" id="imgInput" accept="image/jpeg, image/png" style="display: none;">
+                    <div class="upload-icon"><i class="fas fa-image"></i></div>
+                    <p>Arrastra tu imagen o <strong>haz clic para examinar</strong></p>
+                </div>
+
+                <div id="imgPreviewCard" class="preview-box" style="display: none;">
+                    <img id="imgPreview" alt="Vista previa">
+                    <div class="img-meta">
+                        <p><strong>Archivo:</strong> <span id="imgName">-</span></p>
+                        <p><strong>Tamaño:</strong> <span id="imgSize">-</span></p>
+
+                        <label for="targetFormat">Convertir a:</label>
+                        <select id="targetFormat" class="select-input">
+                            <option value="image/png">PNG</option>
+                            <option value="image/jpeg">JPEG / JPG</option>
+                        </select>
+
+                        <div id="qualityControl" style="display: none; margin-top: 10px;">
+                            <label>Calidad JPEG: <strong id="qualityVal">90%</strong></label>
+                            <input type="range" id="jpegQuality" min="10" max="100" value="90">
+                        </div>
+
+                        <button id="convertImgBtn" class="btn-execute">Convertir Imagen</button>
+                    </div>
+                </div>
+
+                <div id="imgResultCard" class="result-box" style="display: none;">
+                    <h4>✅ ¡Imagen Convertida con Éxito!</h4>
+                    <a id="downloadImgLink" class="btn-download-result" download>📥 Descargar Imagen</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- PIE DE PÁGINA -->
+    <footer class="footer">
+        <p>PETIT-V2 ❤️ es un aplicativo protegido por derechos de autor, creado por <strong>MAUU SOFT</strong>.</p>
+        <p class="author">ING. MAURICIO RAMÍREZ ALVARADO</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
