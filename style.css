@@ -1,34 +1,294 @@
+/* ==========================================================================
+   PETIT-V2 ESTILO PDF24 TOOLS
+   Color Palette: Dark Navy (#1e293b), Accent Blue (#0b3b82), Green (#10b981)
+   ========================================================================== */
+
+:root {
+    --bg-dark: #0f172a;
+    --card-bg: #1e293b;
+    --card-hover: #334155;
+    --accent-blue: #0b3b82;
+    --accent-green: #10b981;
+    --text-light: #f8fafc;
+    --text-muted: #94a3b8;
+    --border-color: #334155;
 }
 
-.main-footer .small {
-    font-size: 0.8rem;
-    opacity: 0.8;
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Adaptabilidad para Dispositivos Móviles y PWA */
-@media (max-width: 768px) {
-    .work-container {
-        flex-direction: column;
-    }
-
-    .tools-nav {
-        flex: none;
-        width: 100%;
-    }
-
-    .hero-banner {
-        padding: 25px 5%;
-    }
-
-    .hero-banner h2 {
-        font-size: 1.6rem;
-    }
-
-    .tool-content-panel {
-        padding: 20px;
-    }
-
-    .btn-primary {
-        width: 100%;
-    }
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
+
+/* NAVBAR */
+.navbar {
+    background-color: #0b1329;
+    padding: 15px 5%;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1300px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.logo-icon {
+    color: #ef4444;
+    font-size: 1.8rem;
+}
+
+.heart {
+    color: #ef4444;
+}
+
+.app-downloads {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-download {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: white;
+}
+
+.btn-android { background-color: #059669; }
+.btn-android:hover { background-color: #047857; }
+
+.btn-windows { background-color: #0284c7; }
+.btn-windows:hover { background-color: #0369a1; }
+
+/* HERO */
+.hero {
+    text-align: center;
+    padding: 40px 20px 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.hero h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.hero p {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    margin-bottom: 25px;
+}
+
+.search-box {
+    position: relative;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.search-box i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+}
+
+.search-box input {
+    width: 100%;
+    padding: 12px 15px 12px 45px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 25px;
+    color: white;
+    font-size: 1rem;
+    outline: none;
+}
+
+.search-box input:focus {
+    border-color: var(--accent-green);
+}
+
+/* GRID DE HERRAMIENTAS */
+.main-container {
+    max-width: 1300px;
+    margin: 30px auto;
+    padding: 0 20px;
+    flex: 1;
+}
+
+.tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 20px;
+}
+
+.tool-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 25px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.tool-card:hover {
+    transform: translateY(-5px);
+    background-color: var(--card-hover);
+    border-color: #3b82f6;
+}
+
+.card-icon {
+    font-size: 2.5rem;
+    color: #60a5fa;
+    margin-bottom: 15px;
+}
+
+.tool-card h3 {
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+}
+
+.tool-card p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+}
+
+/* MODAL Y PANEL DE ACCIÓN */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.modal-content {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    width: 100%;
+    max-width: 600px;
+    padding: 30px;
+    position: relative;
+}
+
+.modal-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+.modal-title { font-size: 1.8rem; margin-bottom: 5px; }
+.modal-desc { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 20px; }
+
+/* FILE UPLOAD BOX */
+.file-upload-box {
+    border: 2px dashed #3b82f6;
+    border-radius: 12px;
+    padding: 30px;
+    text-align: center;
+    cursor: pointer;
+    background: rgba(59, 130, 246, 0.05);
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.file-input {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.upload-icon { font-size: 3rem; color: #3b82f6; margin-bottom: 10px; }
+
+/* INPUTS Y BOTONES */
+.password-group, .rotation-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.input-text, .select-input {
+    width: 100%;
+    padding: 10px;
+    background: #0f172a;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: white;
+    margin-top: 5px;
+}
+
+.btn-execute {
+    width: 100%;
+    padding: 12px;
+    background: var(--accent-green);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.btn-execute:hover { background: #059669; }
+
+.status-msg {
+    margin-top: 15px;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* FOOTER */
+.footer {
+    text-align: center;
+    padding: 20px;
+    border-top: 1px solid var(--border-color);
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+.footer .author { margin-top: 4px; font-weight: bold; }
