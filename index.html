@@ -1,10 +1,8 @@
-<!DOCTYPE html>
-<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- ETIQUETA DE VERIFICACIÓN DE GOOGLE tiene fallas -->
+    <!-- ETIQUETA DE VERIFICACIÓN DE GOOGLE SEARCH CONSOLE -->
     <meta name="google-site-verification" content="0VM_MeKh-FkHCF4sI-v6sSfX25-G5qcyzUs0dGqo2xA" />
     
     <!-- PWA Y MANIFIESTO -->
@@ -13,153 +11,8 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="PETIT">
-    <link rel="apple-touch-icon" href="icon-192.png">
-
-    <!-- TÍTULO OPTIMIZADO PARA GOOGLE -->
-    <title>PETIT ❤️ - Convertidor y Editor de PDF e Imágenes Online Gratis | MAUU SOFT</title>
     
-    <!-- DESCRIPCIÓN QUE APARECE EN LOS RESULTADOS DE BÚSQUEDA -->
-    <meta name="description" content="PETIT ❤️ es una herramienta online gratuita para unir, dividir y convertir archivos PDF, documentos de Office e imágenes JPG/PNG de forma rápida, segura y profesional. Desarrollado por MAUU SOFT.">
-    
-    <!-- PALABRAS CLAVE (KEYWORDS) -->
-    <meta name="keywords" content="PDF, convertir PDF, unir PDF, dividir PDF, Word a PDF, Excel a PDF, PPT a PDF, PDF a Word, JPG a PNG, PNG a JPG, PETIT PDF, editor de PDF gratis, MAUU SOFT">
-    <meta name="author" content="ING. MAURICIO RAMÍREZ ALVARADO">
-    <meta name="robots" content="index, follow">
-
-    <!-- ETIQUETAS PARA COMPARTIR EN REDES SOCIALES -->
-    <meta property="og:title" content="PETIT ❤️ - Editor y Convertidor de PDF e Imágenes Gratis">
-    <meta property="og:description" content="Une, divide y convierte documentos de Office, PDF e imágenes JPEG/PNG con calidad profesional.">
-    <meta property="og:url" content="https://mr0522.github.io/PETIT-V2/">
-    <meta property="og:type" content="website">
-
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
-    <!-- Librerías locales para PDF y ZIP -->
-    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    
-    <script>
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js');
-      }
-    </script>
-</head>
-<body>
-    
-    <header class="main-header">
-        <div class="header-container">
-            <div class="logo">
-                <div class="logo-icon">📄</div>
-                <h1>PETIT-V2 ❤️</h1>
-            </div>
-        </div>
-    </header>
-
-    <section class="hero-banner">
-        <div class="banner-container">
-            <span class="banner-subtitle">Herramienta todo en uno</span>
-            <h2>Tu convertidor y editor de PDF e Imágenes favorito ❤️</h2>
-            <p>Une, divide y convierte documentos de Office (Word, Excel, PPT), PDF e imágenes JPEG/PNG con máxima precisión.</p>
-        </div>
-    </section>
-
-    <main class="main-work-area">
-        <div class="work-container">
-            
-            <!-- MENÚ LATERAL DE CONVERSIONES -->
-            <nav class="tools-nav">
-                <button class="nav-item active" data-tool="merge"><i class="fas fa-file-pdf"></i> Unir PDF</button>
-                <button class="nav-item" data-tool="split"><i class="fas fa-cut"></i> Dividir PDF</button>
-                <button class="nav-item" data-tool="img2pdf"><i class="fas fa-image"></i> Imagen a PDF</button>
-                <button class="nav-item" data-tool="imgconvert"><i class="fas fa-exchange-alt"></i> JPG ↔ PNG</button>
-                <hr>
-                <button class="nav-item" data-tool="word2pdf"><i class="fas fa-file-word"></i> Word a PDF</button>
-                <button class="nav-item" data-tool="excel2pdf"><i class="fas fa-file-excel"></i> Excel a PDF</button>
-                <button class="nav-item" data-tool="ppt2pdf"><i class="fas fa-file-powerpoint"></i> PPT a PDF</button>
-                <hr>
-                <button class="nav-item" data-tool="pdf2word"><i class="fas fa-file-word"></i> PDF a Word</button>
-                <button class="nav-item" data-tool="pdf2excel"><i class="fas fa-file-excel"></i> PDF a Excel</button>
-                <button class="nav-item" data-tool="pdf2ppt"><i class="fas fa-file-powerpoint"></i> PDF a PPT</button>
-            </nav>
-
-            <!-- PANEL DE ACCIÓN GENERAL -->
-            <div class="tool-content-panel">
-                
-                <!-- PANEL ESTÁNDAR (PDF / OFFICE) -->
-                <div class="pane-content" id="standard-pane">
-                    <h3 id="tool-title">Unir PDF</h3>
-                    <p id="tool-desc">Selecciona los archivos para procesar.</p>
-                    
-                    <div class="upload-area">
-                        <input type="file" id="main-file-input" multiple>
-                        <button class="btn-primary" id="btn-process">Ejecutar Acción</button>
-                    </div>
-
-                    <div id="status-box" class="status"></div>
-                </div>
-
-                <!-- PANEL ESPECIAL: CONVERTIDOR DE IMÁGENES (JPEG ↔ PNG) -->
-                <div class="pane-content" id="imgconvert-pane" style="display: none;">
-                    <h3>Convertidor de Imágenes (JPEG ↔ PNG)</h3>
-                    <p>Convierte tus imágenes de forma local, rápida y privada en tu navegador.</p>
-                    
-                    <!-- Zona Drag & Drop -->
-                    <div class="upload-area drop-zone" id="imgDropZone" style="border: 2px dashed #0b3b82; padding: 25px; border-radius: 8px; cursor: pointer; text-align: center;">
-                        <input type="file" id="imgInput" accept="image/jpeg, image/png, image/jpg" style="display: none;">
-                        <i class="fas fa-cloud-upload-alt fa-3x" style="color: #0b3b82; margin-bottom: 10px;"></i>
-                        <p style="margin: 5px 0;">Arrastra tu imagen aquí o <strong>haz clic para seleccionar</strong></p>
-                        <small style="color: #666;">Formatos soportados: JPG, JPEG y PNG</small>
-                    </div>
-
-                    <!-- Previsualización y Opciones -->
-                    <div id="imgPreviewCard" style="display: none; margin-top: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 8px; background: #f9f9f9;">
-                        <div style="display: flex; flex-wrap: wrap; gap: 15px; align-items: center;">
-                            <div style="flex: 1; min-width: 180px; text-align: center;">
-                                <img id="imgPreview" alt="Vista previa" style="max-width: 100%; max-height: 180px; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.15);">
-                            </div>
-                            <div style="flex: 1; min-width: 200px;">
-                                <p style="margin: 4px 0;"><strong>Archivo:</strong> <span id="imgName">-</span></p>
-                                <p style="margin: 4px 0;"><strong>Formato actual:</strong> <span id="imgFormat">-</span></p>
-                                <p style="margin: 4px 0;"><strong>Tamaño:</strong> <span id="imgSize">-</span></p>
-                                <p style="margin: 4px 0;"><strong>Dimensiones:</strong> <span id="imgDimensions">-</span></p>
-
-                                <div style="margin-top: 10px;">
-                                    <label for="targetFormat"><strong>Convertir a:</strong></label>
-                                    <select id="targetFormat" style="width: 100%; padding: 8px; margin-top: 4px; border-radius: 4px; border: 1px solid #ccc;">
-                                        <option value="image/png">PNG</option>
-                                        <option value="image/jpeg">JPEG / JPG</option>
-                                    </select>
-                                </div>
-
-                                <div id="qualityControl" style="display: none; margin-top: 10px;">
-                                    <label for="jpegQuality">Calidad JPEG: <strong id="qualityVal">90%</strong></label>
-                                    <input type="range" id="jpegQuality" min="10" max="100" value="90" style="width: 100%;">
-                                </div>
-
-                                <button id="convertImgBtn" class="btn-primary" style="margin-top: 12px; width: 100%;">⚡ Convertir Imagen</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Descarga -->
-                    <div id="imgResultCard" style="display: none; margin-top: 20px; padding: 15px; border: 1px solid #10b981; border-radius: 8px; background: #ecfdf5; text-align: center;">
-                        <h4 style="color: #059669; margin: 0 0 8px 0;">✅ ¡Imagen Convertida con Éxito!</h4>
-                        <p style="margin: 0 0 12px 0;">Nuevo formato: <strong id="resFormat">PNG</strong> | Nuevo tamaño: <strong id="resSize">0 KB</strong></p>
-                        <a id="downloadImgLink" class="btn-primary" style="background-color: #10b981; text-decoration: none; display: inline-block; padding: 10px 20px;" download="imagen-convertida.png">📥 Descargar Imagen</a>
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
-    </main>
-
-    <footer class="main-footer">
-        <p>PETIT-V2 ❤️ es un aplicativo legal y protegido por derechos de autor, creado por <strong>MAUU SOFT</strong>.</p>
-        <p class="small">ING. MAURICIO RAMÍREZ ALVARADO</p>
-    </footer>
-
-    <script src="script.js"></script>
-</body>
-</html>
+    <!-- ÍCONOS Y FAVICONS -->
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
