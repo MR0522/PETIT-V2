@@ -1,144 +1,34 @@
-:root {
-    --primary-color: #e91e63;
-    --primary-gradient: linear-gradient(135deg, #e91e63 0%, #c2185b 100%);
-    --bg-color: #f6f8fb;
-    --card-bg: #ffffff;
-    --text-color: #333333;
-    --border-color: #e2e6ea;
-}
-
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    margin: 0;
-    padding: 0;
-}
-
-.main-header {
-    background-color: var(--card-bg);
-    padding: 15px 5%;
-    border-bottom: 1px solid var(--border-color);
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.logo h1 {
-    font-size: 1.5rem;
-    margin: 0;
-}
-
-.hero-banner {
-    background: var(--primary-gradient);
-    color: white;
-    padding: 40px 5%;
-}
-
-.hero-banner h2 {
-    font-size: 2.2rem;
-    margin: 10px 0;
-}
-
-.banner-subtitle {
-    background: rgba(255,255,255,0.2);
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-}
-
-.main-work-area {
-    padding: 30px 5%;
-}
-
-.work-container {
-    display: flex;
-    gap: 20px;
-}
-
-.tools-nav {
-    flex: 0 0 220px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    background: white;
-    padding: 15px;
-    border-radius: 10px;
-    border: 1px solid var(--border-color);
-}
-
-.nav-item {
-    background: none;
-    border: none;
-    padding: 10px 15px;
-    text-align: left;
-    font-size: 0.95rem;
-    border-radius: 6px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.nav-item.active {
-    background-color: var(--primary-color);
-    color: white;
-}
-
-.tool-content-panel {
-    flex: 1;
-    background: white;
-    padding: 30px;
-    border-radius: 10px;
-    border: 1px solid var(--border-color);
-}
-
-.upload-area {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-input[type="file"] {
-    padding: 15px;
-    border: 2px dashed var(--border-color);
-    border-radius: 8px;
-    cursor: pointer;
-}
-
-.btn-primary {
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    padding: 12px 25px;
-    font-size: 1rem;
-    border-radius: 6px;
-    cursor: pointer;
-    align-self: flex-start;
-}
-
-.btn-primary:hover {
-    background-color: #c2185b;
-}
-
-.status {
-    margin-top: 20px;
-    font-weight: bold;
-}
-
-.main-footer {
-    background-color: #1a1a1d;
-    color: white;
-    text-align: center;
-    padding: 20px;
-    margin-top: 50px;
 }
 
 .main-footer .small {
     font-size: 0.8rem;
     opacity: 0.8;
+}
+
+/* Adaptabilidad para Dispositivos Móviles y PWA */
+@media (max-width: 768px) {
+    .work-container {
+        flex-direction: column;
+    }
+
+    .tools-nav {
+        flex: none;
+        width: 100%;
+    }
+
+    .hero-banner {
+        padding: 25px 5%;
+    }
+
+    .hero-banner h2 {
+        font-size: 1.6rem;
+    }
+
+    .tool-content-panel {
+        padding: 20px;
+    }
+
+    .btn-primary {
+        width: 100%;
+    }
 }
