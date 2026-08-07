@@ -1,3 +1,8 @@
+// ==========================================================================
+// PETIT-V2 - Convertidor y Editor Multiherramienta
+// Autor: MAUU SOFT (ING. MAURICIO RAMÍREZ ALVARADO)
+// ==========================================================================
+
 // API Key de CloudConvert configurada
 const CLOUDCONVERT_API_KEY = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiNGVlM2EzODdlYzIyODRjODI5NGQ1OGEzZmQ2OThlMTUyMDAwYmRmMTE1ZjM4ZjhhMTYxNGU5ZDRiNzIxMzJjMzA3ZGQ5MDhhZTBiNmE2MzAiLCJpYXQiOjE3ODU3MDEzNTcuMTIwNzQ3LCJuYmYiOjE3ODU3MDEzNTcuMTIwNzQ4LCJleHAiOjQ5NDEzTZQzg0OThlMTUyMDAwYmRmMTE1ZjM4ZjhhMTYxNGU5ZDRiNzIxMzJjMzA3ZGQ5MDhhZTBiNmE2MzAiLCJpYXQiOjE3ODU3MDEzNTcuMTIwNzQ3LCJuYmYiOjE3ODU3MDEzNTcuMTIwNzQ4LCJleHAiOjQ5NDEzNzQ5NTcuMTE1ODIxLCJzdWIiOiI0MTU2Njk5MCIsInNjb3BlcyI6WyJ0YXNrLnJlYWQiLCJ0YXNrLndyaXRlIl19.X5lRjj96i180gCCqEPlxLFgRzEgu_rihn3LgtL-2awBDCiCymtCu14Pckr6e2X9qjxLC6pPGFeHlFjLhFTmpsJ6sCFJ78wYiihGRpXGHrkkPFlrhJKImGFbtYWJWXOiQuTD0_LJ7KiDVBeV5mKNSLWmisMxMpw6S0NFSbiaDojbnwK23jQeqXZQzqIJA555SjnUNlda_s7t61aCPVqMBS_BempynIUzakol4v2dnsaMGaFdxqh-PyHh3z2jAZ7vivR-Dc2jURH9wRFx2-kU7Ry0PdaHK0C9hUtSYEHAgcCn7CRMMscuUyRP6QeT66ulOyqC4YTf3n-O-mvCcRlHemwEWyJCVKQ2Ye8wIn8uujj8qhgwGzJT8EZTxzB0cIRR5t81NbgTLmO4HZ2lc0-3M2GjU4UzvwBaICgVDC04VZG7ahHuDvfv0ayJkB9ccq1LwLyLZLcl3EraTqBypl6Hmxefe6p1GapGs6i30jX0v7Nqfkwx78lyXKHS2tSczn_PPcQkdo-PilLdJWwJd5S_h6Mh5s4_ieK8W-czZ_u1H5hAuXwALdiwn2NuV8WRjyZKabvE4J3TYkrt3bAc6IdA-5Se3znSkCnlX8B20otkIl5jkP1vWwHSJTUe7vmclWdEovaxwU87odeBAiNuJeOeXm-4J1qGRZeST0ydSqN3uQC8";
 
@@ -8,6 +13,7 @@ const toolConfig = {
     merge: { title: "Unir PDF", desc: "Selecciona 2 o más archivos PDF para unirlos en uno solo.", accept: ".pdf", multiple: true },
     split: { title: "Dividir PDF", desc: "Selecciona un archivo PDF para extraer sus páginas.", accept: ".pdf", multiple: false },
     img2pdf: { title: "Imagen a PDF", desc: "Selecciona imágenes (JPG, PNG) para convertirlas a PDF.", accept: "image/jpeg, image/png", multiple: true },
+    imgconvert: { title: "JPG ↔ PNG", desc: "Convierte imágenes entre JPG y PNG localmente.", accept: "image/jpeg, image/png", multiple: false },
     word2pdf: { title: "Word a PDF", desc: "Convierte tus documentos .docx a PDF.", accept: ".docx, .doc", multiple: false, convertTo: "pdf" },
     excel2pdf: { title: "Excel a PDF", desc: "Convierte tus hojas de cálculo .xlsx a PDF.", accept: ".xlsx, .xls", multiple: false, convertTo: "pdf" },
     ppt2pdf: { title: "PowerPoint a PDF", desc: "Convierte tus presentaciones .pptx a PDF.", accept: ".pptx, .ppt", multiple: false, convertTo: "pdf" },
@@ -16,7 +22,9 @@ const toolConfig = {
     pdf2ppt: { title: "PDF a PowerPoint", desc: "Convierte tu PDF en una presentación .pptx.", accept: ".pdf", multiple: false, convertTo: "pptx" }
 };
 
-// Cambio de pestañas
+// =======================================================
+// CAMBIO DE PESTAÑAS Y NAVEGACIÓN
+// =======================================================
 document.querySelectorAll('.nav-item').forEach(button => {
     button.addEventListener('click', () => {
         document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
@@ -25,19 +33,33 @@ document.querySelectorAll('.nav-item').forEach(button => {
         currentTool = button.getAttribute('data-tool');
         const config = toolConfig[currentTool];
         
-        document.getElementById('tool-title').innerText = config.title;
-        document.getElementById('tool-desc').innerText = config.desc;
-        
-        const fileInput = document.getElementById('main-file-input');
-        fileInput.value = "";
-        fileInput.accept = config.accept;
-        fileInput.multiple = config.multiple;
-        
-        document.getElementById('status-box').innerText = "";
+        const standardPane = document.getElementById('standard-pane');
+        const imgConvertPane = document.getElementById('imgconvert-pane');
+
+        // Alternar entre panel estándar y el panel especial de imágenes
+        if (currentTool === 'imgconvert') {
+            if (standardPane) standardPane.style.display = 'none';
+            if (imgConvertPane) imgConvertPane.style.display = 'block';
+        } else {
+            if (standardPane) standardPane.style.display = 'block';
+            if (imgConvertPane) imgConvertPane.style.display = 'none';
+
+            document.getElementById('tool-title').innerText = config.title;
+            document.getElementById('tool-desc').innerText = config.desc;
+            
+            const fileInput = document.getElementById('main-file-input');
+            fileInput.value = "";
+            fileInput.accept = config.accept;
+            fileInput.multiple = config.multiple;
+            
+            document.getElementById('status-box').innerText = "";
+        }
     });
 });
 
-// Botón de procesamiento principal
+// =======================================================
+// BOTÓN DE PROCESAMIENTO PRINCIPAL (PANEL ESTÁNDAR)
+// =======================================================
 document.getElementById('btn-process').addEventListener('click', async () => {
     const input = document.getElementById('main-file-input');
     const statusBox = document.getElementById('status-box');
@@ -49,7 +71,7 @@ document.getElementById('btn-process').addEventListener('click', async () => {
 
     const cleanKey = CLOUDCONVERT_API_KEY.trim();
 
-    // 1. Procesamiento local
+    // 1. Procesamiento local (pdf-lib & JSZip)
     if (currentTool === "merge") {
         await mergePDFs(input.files);
     } else if (currentTool === "split") {
@@ -178,17 +200,147 @@ async function imagesToPDF(files) {
     }
 }
 
-// Función auxiliar para forzar la descarga de archivos Blob
-function downloadBlob(data, fileName, mimeType) {
-    const blob = new Blob([data], { type: mimeType });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = fileName;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+// =======================================================
+// CONVERTIDOR LOCAL DE IMÁGENES (JPEG ↔ PNG via Canvas)
+// =======================================================
+let imgConvertFile = null;
+let imgConvertLoaded = null;
+
+const imgDropZone = document.getElementById('imgDropZone');
+const imgInput = document.getElementById('imgInput');
+const imgPreviewCard = document.getElementById('imgPreviewCard');
+const imgPreview = document.getElementById('imgPreview');
+const imgName = document.getElementById('imgName');
+const imgFormat = document.getElementById('imgFormat');
+const imgSize = document.getElementById('imgSize');
+const imgDimensions = document.getElementById('imgDimensions');
+const targetFormat = document.getElementById('targetFormat');
+const qualityControl = document.getElementById('qualityControl');
+const jpegQuality = document.getElementById('jpegQuality');
+const qualityVal = document.getElementById('qualityVal');
+const convertImgBtn = document.getElementById('convertImgBtn');
+const imgResultCard = document.getElementById('imgResultCard');
+const resFormat = document.getElementById('resFormat');
+const resSize = document.getElementById('resSize');
+const downloadImgLink = document.getElementById('downloadImgLink');
+
+if (imgDropZone && imgInput) {
+    imgDropZone.addEventListener('click', () => imgInput.click());
+
+    ['dragenter', 'dragover'].forEach(evt => {
+        imgDropZone.addEventListener(evt, (e) => {
+            e.preventDefault();
+            imgDropZone.classList.add('dragover');
+        });
+    });
+
+    ['dragleave', 'drop'].forEach(evt => {
+        imgDropZone.addEventListener(evt, (e) => {
+            e.preventDefault();
+            imgDropZone.classList.remove('dragover');
+        });
+    });
+
+    imgDropZone.addEventListener('drop', (e) => {
+        const files = e.dataTransfer.files;
+        if (files.length > 0) handleImgConvertFile(files[0]);
+    });
+
+    imgInput.addEventListener('change', (e) => {
+        if (e.target.files.length > 0) handleImgConvertFile(e.target.files[0]);
+    });
+}
+
+function handleImgConvertFile(file) {
+    if (!file.type.match('image/jpeg') && !file.type.match('image/png')) {
+        alert('Por favor selecciona una imagen en formato JPG, JPEG o PNG.');
+        return;
+    }
+
+    imgConvertFile = file;
+    if (imgName) imgName.textContent = file.name;
+    if (imgFormat) imgFormat.textContent = file.type === 'image/png' ? 'PNG' : 'JPEG/JPG';
+    if (imgSize) imgSize.textContent = formatBytes(file.size);
+
+    if (targetFormat) {
+        if (file.type === 'image/png') {
+            targetFormat.value = 'image/jpeg';
+            if (qualityControl) qualityControl.style.display = 'block';
+        } else {
+            targetFormat.value = 'image/png';
+            if (qualityControl) qualityControl.style.display = 'none';
+        }
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        imgConvertLoaded = new Image();
+        imgConvertLoaded.onload = () => {
+            if (imgDimensions) imgDimensions.textContent = `${imgConvertLoaded.width} x ${imgConvertLoaded.height} px`;
+            if (imgPreview) imgPreview.src = e.target.result;
+            if (imgPreviewCard) imgPreviewCard.style.display = 'block';
+            if (imgResultCard) imgResultCard.style.display = 'none';
+        };
+        imgConvertLoaded.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+}
+
+if (targetFormat) {
+    targetFormat.addEventListener('change', () => {
+        if (qualityControl) {
+            qualityControl.style.display = targetFormat.value === 'image/jpeg' ? 'block' : 'none';
+        }
+    });
+}
+
+if (jpegQuality && qualityVal) {
+    jpegQuality.addEventListener('input', () => {
+        qualityVal.textContent = `${jpegQuality.value}%`;
+    });
+}
+
+if (convertImgBtn) {
+    convertImgBtn.addEventListener('click', () => {
+        if (!imgConvertLoaded || !imgConvertFile) return;
+
+        const canvas = document.createElement('canvas');
+        canvas.width = imgConvertLoaded.width;
+        canvas.height = imgConvertLoaded.height;
+        const ctx = canvas.getContext('2d');
+
+        // Si se convierte a JPEG, rellenar fondo blanco para evitar opacidad negra en transparencias
+        if (targetFormat.value === 'image/jpeg') {
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+
+        ctx.drawImage(imgConvertLoaded, 0, 0);
+
+        const format = targetFormat.value;
+        const quality = parseFloat(jpegQuality ? jpegQuality.value : 90) / 100;
+
+        canvas.toBlob((blob) => {
+            if (!blob) return;
+
+            const ext = format === 'image/png' ? 'png' : 'jpg';
+            const baseName = imgConvertFile.name.substring(0, imgConvertFile.name.lastIndexOf('.')) || 'imagen';
+            const newFileName = `${baseName}_PETIT.${ext}`;
+
+            const blobUrl = URL.createObjectURL(blob);
+            if (downloadImgLink) {
+                downloadImgLink.href = blobUrl;
+                downloadImgLink.download = newFileName;
+            }
+
+            if (resFormat) resFormat.textContent = ext.toUpperCase();
+            if (resSize) resSize.textContent = formatBytes(blob.size);
+            if (imgResultCard) {
+                imgResultCard.style.display = 'block';
+                imgResultCard.scrollIntoView({ behavior: 'smooth' });
+            }
+        }, format, quality);
+    });
 }
 
 // =======================================================
@@ -278,4 +430,30 @@ async function convertWithCloudConvert(file, outputFormat, apiKey) {
         statusBox.style.color = "red";
         statusBox.innerText = `❌ ${error.message || "Ocurrió un error durante la conversión."}`;
     }
+}
+
+// =======================================================
+// FUNCIONES AUXILIARES
+// =======================================================
+
+// Forzar descarga de archivos Blob
+function downloadBlob(data, fileName, mimeType) {
+    const blob = new Blob([data], { type: mimeType });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+// Formatear tamaño de archivos
+function formatBytes(bytes) {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
 }
