@@ -1,17 +1,29 @@
 {
-  "name": "PETIT-V2 Convertidor PDF",
+  "name": "PETIT-V2 | Convertidor PDF e Imágenes",
   "short_name": "PETIT",
-  "description": "Convertidor y editor de archivos PDF y Office.",
-  "start_url": "/PETIT-V2/",
+  "description": "Convertidor y editor gratuito de archivos PDF, Office e imágenes.",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#e91e63",
+  "theme_color": "#0b3b82",
+  "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "https://cdn-icons-png.flaticon.com/512/337/337946.png",
+      "src": "icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
+    },
+    {
+      "src": "icons/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
     }
   ]
 }
