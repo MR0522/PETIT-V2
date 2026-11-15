@@ -423,4 +423,81 @@ function downloadBlob(data, fileName, mimeType) {
     a.download = fileName;
     a.click();
     URL.revokeObjectURL(url);
+
+    // Cola global para almacenar los archivos seleccionados ordenadamente
+let pdfFilesQueue = [];
+
+// 1. Agregar archivos (acumulativo desde cualquier punto)
+function addFilesToQueue(fileList) {
+    const newFiles = Array.from(fileList);
+    
+    // Filtrar solo archivos PDF por seguridad
+    const validFiles = newFiles.filter(file => file.type === 'application/pdf');
+    
+    if (validFiles.length !== newFiles.length) {
+        alert("Algunos archivos fueron ignorados porque no son formato PDF.");
+    }
+
+    // Acumular a la cola existente
+    pdfFilesQueue = [...pdfFilesQueue, ...validFiles];
+    
+    // Actualizar la interfaz visual
+    renderFilesQueue();
+}
+
+// 2. Eliminar un archivo específico de la posición i
+function removeFileFromQueue(index) {
+    pdfFilesQueue.splice(index, 1);
+    renderFilesQueue();
+}
+
+// 3. Mover la posición de un archivo (Reordenar)
+function moveFile(index, direction) {
+    const targetIndex = index + direction;
+    
+    // Validar límites del array
+    if (targetIndex < 0 || targetIndex >= pdfFilesQueue.length) return;
+    
+    // Intercambiar posiciones
+    const temp = pdfFilesQueue[index];
+    pdfFilesQueue[index] = pdfFilesQueue[targetIndex];
+    pdfFilesQueue[targetIndex] = temp;
+    
+    renderFilesQueue();
+}
+
+// 4. Renderizar la interfaz visual de los archivos (Estilo iLovePDF)
+function renderFilesQueue() {
+    const container = document.getElementById('files-preview-container');
+    if (!container) return;
+    
+    container.innerHTML = '';
+
+    if (pdfFilesQueue.length === 0) {
+        container.innerHTML = `<p class="empty-queue-text">No hay archivos seleccionados. Comienza a agregar PDFs.</p>`;
+        return;
+    }
+
+    pdfFilesQueue.forEach((file, index) => {
+        const fileCard = document.createElement('div');
+        fileCard.className = 'pdf-card-item';
+        fileCard.innerHTML = `
+            <div class="file-info">
+                <span class="file-order">#${index + 1}</span>
+                <span class="file-name" title="${file.name}">${file.name}</span>
+                <span class="file-size">(${(file.size / 1024 / 1024).toFixed(2)} MB)</span>
+            </div>
+            <div class="file-actions">
+                <button onclick="moveFile(${index}, -1)" ${index === 0 ? 'disabled' : ''} title="Mover izquierda/arriba">⬅️</button>
+                <button onclick="moveFile(${index}, 1)" ${index === indexCount() ? 'disabled' : ''} title="Mover derecha/abajo">➡️</button>
+                <button onclick="removeFileFromQueue(${index})" class="btn-delete" title="Eliminar">❌</button>
+            </div>
+        `;
+        container.appendChild(fileCard);
+    });
+}
+
+function indexCount() {
+    return pdfFilesQueue.length - 1;
+}
 }
