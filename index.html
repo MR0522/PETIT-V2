@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <!-- Google Verification -->
     <meta name="google-site-verification" content="0VM_MeKh-FkHCF4sI-v6sSfX25-G5qcyzUs0dGqo2xA" />
     
@@ -64,7 +63,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 </head>
 <body>
-
     <!-- CABECERA PRINCIPAL ESTILO PDF24 -->
     <header class="navbar">
         <div class="nav-container">
@@ -219,9 +217,19 @@
 
                 <!-- Zona de Carga -->
                 <div class="file-upload-box">
-                    <input type="file" id="main-file-input" class="file-input">
+                    <input type="file" id="main-file-input" class="file-input" multiple>
                     <div class="upload-icon"><i class="fas fa-cloud-upload-alt"></i></div>
                     <p>Arrastra tus archivos aquí o <strong>haz clic para seleccionar</strong></p>
+                </div>
+
+                <!-- Contenedor donde se listan y ordenan las tarjetas estilo iLovePDF para Unir PDF -->
+                <div id="files-preview-container" class="files-grid" style="display: none; margin-top: 15px;"></div>
+
+                <!-- Botón opcional para agregar más archivos desde la misma vista de cola -->
+                <div id="add-more-container" style="display: none; margin-top: 12px; text-align: center;">
+                    <label for="main-file-input" class="btn-add-more" style="cursor: pointer; background: #e2e8f0; color: #333; padding: 8px 16px; border-radius: 6px; display: inline-block; font-weight: 600; font-size: 0.9rem;">
+                        <i class="fas fa-plus"></i> Agregar más archivos
+                    </label>
                 </div>
 
                 <!-- Campo dinámico para contraseña de PDF protegidos -->
@@ -292,26 +300,5 @@
     </footer>
 
     <script src="script.js"></script>
-    <div class="pdf-tool-workspace">
-    <h2>Unir archivos PDF</h2>
-    
-    <!-- Zona de Carga / Input oculto o visible -->
-    <div class="upload-dropzone" id="dropzone">
-        <p>Arrastra tus archivos aquí o</p>
-        <label for="file-input" class="btn-select-files">Seleccionar archivos PDF</label>
-        <input type="file" id="file-input" multiple accept=".pdf" style="display: none;" />
-    </div>
-
-    <!-- Contenedor donde se listan y ordenan dinámicamente -->
-    <div id="files-preview-container" class="files-grid">
-        <!-- Las tarjetas se generan aquí por JavaScript -->
-    </div>
-
-    <!-- Botón para añadir más archivos desde otro punto -->
-    <div class="workspace-actions" style="margin-top: 20px;">
-        <label for="file-input" class="btn-add-more">➕ Agregar más archivos</label>
-        <button id="process-action-btn" class="btn-primary">Unir PDFs</button>
-    </div>
-</div>
 </body>
 </html>
